@@ -30,7 +30,12 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
   }, [onClientsUpdate]);
 
   useEffect(() => {
-    loadClients(group);
+    if (group === "ninguno") {
+      setClients([]);
+      onClientsUpdate([]);
+    } else {
+      loadClients(group);
+    }
   }, [group, loadClients]);
 
   const addClient = async () => {
@@ -83,6 +88,7 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
           border: '1px solid #ccc'
         }}
       >
+        <option value="ninguno">Ninguno</option>
         <option value="nuevos">Nuevos</option>
         <option value="viejos">Viejos</option>
         <option value="compras_recientes">Compras recientes</option>

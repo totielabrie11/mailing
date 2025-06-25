@@ -1,0 +1,106 @@
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+
+const DropManager = ({ onManualUpdate }) => {
+  const [dropClients, setDropClients] = useState([]);
+  const [email, setEmail] = useState("");
+
+  const timeSince = (isoDate) => {
+    if (!isoDate) return "No enviado aún";
+    const diff = Date.now() - new Date(isoDate).getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (days === 0) return "Hoy";
+    if (days === 1) return "Hace 1 día";
+    return `Hace ${days} días`;
+  };
+
+  const addDropClient = () => {
+    if (!email) return toast.error("Ingrese un correo válido ❗");
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) return toast.error("Correo inválido 😓");
+
+    if (dropClients.find(c => c.email === email)) return toast.warn("Este correo ya está en la lista ⚠️");
+
+    const newClient = { email, lastSent: null };
+    const updated = [...dropClients, newClient];
+    setDropClients(updated);
+    onManualUpdate && onManualUpdate(updated);
+    setEmail("");
+    toast.success("Correo añadido ✉️");
+  };
+
+  const deleteDropClient = (emailToDelete) => {
+    const updated = dropClients.filter(c => c.email !== emailToDelete);
+    setDropClients(updated);
+    onManualUpdate && onManualUpdate(updated);
+    toast.info("Correo eliminado ❌");
+  };
+
+  return (
+    <div>
+      <h3>📥 DropManager: Correos manuales</h3>
+
+      <div style={{ marginBottom: 12 }}>
+        <input
+          type="email"
+          placeholder="email@cliente.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            marginRight: '8px',
+            width: '260px'
+          }}
+        />
+        <button onClick={addDropClient} style={{ padding: '8px 12px' }}>
+          Agregar
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+        {dropClients.map((client, idx) => (
+          <div
+            key={idx}
+            style={{
+              padding: '10px 14px',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              backgroundColor: '#f0f0f0',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              minWidth: '260px',
+              position: 'relative'
+            }}
+          >
+            <div style={{ fontWeight: 500 }}>{client.email}</div>
+            <div style={{ fontSize: '0.75rem', color: '#555', marginBottom: 8 }}>
+              Último envío: {timeSince(client.lastSent)}
+            </div>
+            <button
+              onClick={() => deleteDropClient(client.email)}
+              style={{
+                position: 'absolute',
+                top: 8,
+                right: 10,
+                background: 'transparent',
+                border: 'none',
+                color: 'crimson',
+                fontSize: '1.2rem',
+                cursor: 'pointer'
+              }}
+              title="Eliminar"
+            >
+              🗑️
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default DropManager;
