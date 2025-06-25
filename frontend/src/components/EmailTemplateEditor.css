@@ -1,0 +1,53 @@
+.email-editor {
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 12px;
+  max-width: 100%;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.email-editor h5 {
+  margin-bottom: 1.2rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.email-editor .form-label {
+  font-weight: 500;
+  color: #34495e;
+}
+
+.email-editor .form-select,
+.email-editor .form-control {
+  border-radius: 0.375rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.email-editor .form-control:focus,
+.email-editor .form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.15rem rgba(52, 152, 219, 0.25);
+}
+
+.email-editor textarea {
+  width: 100%;
+  min-height: 60vh;
+  resize: vertical;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.email-editor button.btn-primary {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  background-color: #0078d4;
+  border-color: #0078d4;
+  padding: 0.6rem 1.2rem;
+}
+
+.email-editor button.btn-primary:hover {
+  background-color: #005ea2;
+  border-color: #005ea2;
+}

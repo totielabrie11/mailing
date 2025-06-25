@@ -1,0 +1,26 @@
+{
+  "nuevos": [
+    "martinezcarlosmanuel.1@gmail.com",
+    {
+      "email": "martinezcarlosmanuel.1@gmail.com",
+      "lastSent": "2025-06-24T13:04:05.340Z"
+    },
+    {
+      "email": "cintianatali.m1@gmail.com",
+      "lastSent": "2025-06-25T13:43:25.015Z"
+    }
+  ],
+  "viejos": [
+    {
+      "email": "cintianatali.m1@gmail.com",
+      "lastSent": "2025-06-25T13:43:25.015Z"
+    },
+    {
+      "email": "albertoberdun@yahoo.com.ar",
+      "lastSent": "2025-06-25T13:43:25.015Z"
+    }
+  ],
+  "compras_recientes": [
+    "cdmartinez@telecentro.com.ar"
+  ]
+}
