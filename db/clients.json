@@ -7,9 +7,18 @@
     {
       "email": "comercial1@gsarental.com.ar",
       "lastSent": "2025-06-26T15:04:37.929Z"
+    },
+    {
+      "email": "sincontactar@dosin.com",
+      "lastSent": null
     }
   ],
-  "viejos": [],
+  "viejos": [
+    {
+      "email": "primercliente@dosiman.com",
+      "lastSent": "2025-06-26T16:54:21.853Z"
+    }
+  ],
   "compras_recientes": [
     "cdmartinez@telecentro.com.ar"
   ]

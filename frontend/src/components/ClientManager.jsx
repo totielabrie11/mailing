@@ -4,15 +4,17 @@ import axios from 'axios';
 
 const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
   const [clients, setClients] = useState([]);
-  const [email, setEmail] = useState("");
-  const [search, setSearch] = useState("");
+  const [email, setEmail] = useState('');
+  const [search, setSearch] = useState('');
+  const [historiales, setHistoriales] = useState({});
+  const [expandido, setExpandido] = useState(null);
 
   const timeSince = (isoDate) => {
-    if (!isoDate) return "Nunca contactado";
+    if (!isoDate) return 'Nunca contactado';
     const diff = Date.now() - new Date(isoDate).getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    if (days === 0) return "Hoy";
-    if (days === 1) return "Hace 1 día";
+    if (days === 0) return 'Hoy';
+    if (days === 1) return 'Hace 1 día';
     return `Hace ${days} días`;
   };
 
@@ -25,13 +27,13 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
       setClients(formatted);
       onClientsUpdate(formatted);
     } catch (err) {
-      toast.error("Error al cargar clientes 😵");
+      toast.error('Error al cargar clientes 😵');
       console.error(err);
     }
   }, [onClientsUpdate]);
 
   useEffect(() => {
-    if (group === "ninguno") {
+    if (group === 'ninguno') {
       setClients([]);
       onClientsUpdate([]);
     } else {
@@ -40,12 +42,10 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
   }, [group, loadClients]);
 
   const addClient = async () => {
-    if (!email) return toast.error("Debe ingresar un correo válido ❗");
-
+    if (!email) return toast.error('Debe ingresar un correo válido ❗');
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) return toast.error("Correo inválido 😓");
-
-    if (clients.find(c => c.email === email)) return toast.warn("Este correo ya fue agregado ⚠️");
+    if (!emailPattern.test(email)) return toast.error('Correo inválido 😓');
+    if (clients.find((c) => c.email === email)) return toast.warn('Este correo ya fue agregado ⚠️');
 
     try {
       const res = await axios.post(`http://localhost:5000/api/clients/${group}`, { email });
@@ -53,11 +53,11 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
       const updated = [...clients, newClient];
       setClients(updated);
       onClientsUpdate(updated);
-      setEmail("");
-      toast.success("Cliente agregado ✔️");
+      setEmail('');
+      toast.success('Cliente agregado ✔️');
     } catch (err) {
-      if (err.response?.status === 409) toast.warn("Este cliente ya está registrado ⚠️");
-      else toast.error("Error al guardar en el servidor 😵");
+      if (err.response?.status === 409) toast.warn('Este cliente ya está registrado ⚠️');
+      else toast.error('Error al guardar en el servidor 😵');
       console.error(err);
     }
   };
@@ -65,31 +65,51 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
   const deleteClient = async (emailToDelete) => {
     const confirmed = window.confirm(`¿Eliminar el cliente ${emailToDelete}?`);
     if (!confirmed) return;
-
     try {
       await axios.delete(`http://localhost:5000/api/clients/${group}/${encodeURIComponent(emailToDelete)}`);
-      const updated = clients.filter(c => c.email !== emailToDelete);
+      const updated = clients.filter((c) => c.email !== emailToDelete);
       setClients(updated);
       onClientsUpdate(updated);
-      toast.success("Correo eliminado ❌");
+      toast.success('Correo eliminado ❌');
     } catch (err) {
-      toast.error("No se pudo eliminar el correo");
+      toast.error('No se pudo eliminar el correo');
       console.error(err);
     }
   };
 
-  // Aplica filtro por contacto y búsqueda
+  const toggleHistorial = async (email) => {
+    if (expandido === email) {
+      setExpandido(null);
+      return;
+    }
+    if (!historiales[email]) {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/envios/cliente/${encodeURIComponent(email)}`);
+        setHistoriales((prev) => ({ ...prev, [email]: res.data }));
+      } catch {
+        toast.error('No se pudo obtener el historial');
+      }
+    }
+    setExpandido(email);
+  };
+
   const clientesFiltrados = clients
-    .filter(c => {
+    .filter((c) => {
       if (filtro === 'sinContacto') return !c.lastSent;
       if (filtro === 'contactados') return !!c.lastSent;
       return true;
     })
-    .filter(c => c.email.toLowerCase().includes(search.toLowerCase()));
+    .filter((c) => c.email.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div>
-      <h3>📇 Lista de Clientes: {group.replace(/_/g, " ")}</h3>
+      <h3>📇 Lista de Clientes: {group.replace(/_/g, ' ')}</h3>
+
+      {filtro && (
+        <div style={{ marginBottom: 10, fontSize: '0.9rem', color: '#444' }}>
+          🔍 Filtro activo: <strong>{filtro === 'contactados' ? 'Contactados' : 'Sin contacto'}</strong>
+        </div>
+      )}
 
       <select
         value={group}
@@ -146,8 +166,8 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
             key={idx}
             draggable
             onDragStart={(e) => {
-              e.dataTransfer.setData("text/plain", JSON.stringify(client));
-              e.dataTransfer.effectAllowed = "move";
+              e.dataTransfer.setData('text/plain', JSON.stringify(client));
+              e.dataTransfer.effectAllowed = 'move';
             }}
             style={{
               padding: '10px 14px',
@@ -162,10 +182,28 @@ const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
               cursor: 'grab'
             }}
           >
-            <div style={{ fontWeight: 500 }}>{client.email}</div>
+            <div
+              style={{ fontWeight: 500, color: '#0077cc', cursor: 'pointer' }}
+              onClick={() => toggleHistorial(client.email)}
+              title="Ver historial de envíos"
+            >
+              {client.email}
+            </div>
             <div style={{ fontSize: '0.75rem', color: '#555', marginBottom: 8 }}>
               Último envío: {timeSince(client.lastSent)}
             </div>
+
+            {expandido === client.email && (
+              <div style={{ fontSize: '0.75rem', color: '#333', marginTop: 6 }}>
+                <strong>📬 Historial:</strong>
+                <ul style={{ margin: 0, paddingLeft: 16 }}>
+                  {(historiales[client.email] || []).map((h, i) => (
+                    <li key={i}>{new Date(h.fecha).toLocaleString()}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <button
               onClick={() => deleteClient(client.email)}
               style={{
