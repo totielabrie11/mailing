@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
+const ClientManager = ({ onClientsUpdate, group, setGroup, filtro }) => {
   const [clients, setClients] = useState([]);
   const [email, setEmail] = useState("");
+  const [search, setSearch] = useState("");
 
   const timeSince = (isoDate) => {
     if (!isoDate) return "Nunca contactado";
@@ -62,6 +63,9 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
   };
 
   const deleteClient = async (emailToDelete) => {
+    const confirmed = window.confirm(`¿Eliminar el cliente ${emailToDelete}?`);
+    if (!confirmed) return;
+
     try {
       await axios.delete(`http://localhost:5000/api/clients/${group}/${encodeURIComponent(emailToDelete)}`);
       const updated = clients.filter(c => c.email !== emailToDelete);
@@ -73,6 +77,15 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
       console.error(err);
     }
   };
+
+  // Aplica filtro por contacto y búsqueda
+  const clientesFiltrados = clients
+    .filter(c => {
+      if (filtro === 'sinContacto') return !c.lastSent;
+      if (filtro === 'contactados') return !!c.lastSent;
+      return true;
+    })
+    .filter(c => c.email.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div>
@@ -113,8 +126,22 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
         </button>
       </div>
 
+      <input
+        type="text"
+        placeholder="Buscar email..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          marginBottom: 16,
+          padding: '6px',
+          width: '260px',
+          borderRadius: '4px',
+          border: '1px solid #ccc'
+        }}
+      />
+
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-        {clients.map((client, idx) => (
+        {clientesFiltrados.map((client, idx) => (
           <div
             key={idx}
             draggable

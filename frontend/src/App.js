@@ -15,10 +15,11 @@ const App = () => {
   const [clientGroup, setClientGroup] = useState("nuevos");
   const [templateGroup, setTemplateGroup] = useState("nuevos");
 
-  // 👇 Define la lista real de destinatarios
+  const [filtro, setFiltro] = useState(null); // 'contactados', 'sinContacto' o null
+
+  // Lista real de destinatarios
   const effectiveRecipients = clientGroup === "ninguno" ? dropClients : clients;
 
-  // 👇 Se invoca cuando un email es arrastrado desde ClientManager hacia DropManager
   const handleDropTransfer = (emailToRemove) => {
     setClients(prev => prev.filter(c => c.email !== emailToRemove));
   };
@@ -32,11 +33,15 @@ const App = () => {
           group={clientGroup}
           setGroup={setClientGroup}
           onClientsUpdate={setClients}
+          filtro={filtro}
         />
       </section>
 
       <section style={{ marginBottom: 30 }}>
-        <EmailDashboard group={clientGroup} />
+        <EmailDashboard
+          group={clientGroup}
+          setFiltro={setFiltro}
+        />
       </section>
 
       <section style={{ marginBottom: 30 }}>
