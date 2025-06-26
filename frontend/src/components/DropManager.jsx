@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const DropManager = ({ onManualUpdate }) => {
+const DropManager = ({ onManualUpdate, onDropTransfer }) => {
   const [dropClients, setDropClients] = useState([]);
   const [email, setEmail] = useState("");
 
@@ -37,9 +37,51 @@ const DropManager = ({ onManualUpdate }) => {
     toast.info("Correo eliminado ❌");
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text/plain");
+    if (!data) return;
+
+    try {
+      const draggedClient = JSON.parse(data);
+      if (!draggedClient?.email) return;
+
+      if (dropClients.find(c => c.email === draggedClient.email)) {
+        return toast.warn("Este correo ya está en DropManager ⚠️");
+      }
+
+      const updated = [...dropClients, { ...draggedClient, lastSent: null }];
+      setDropClients(updated);
+      onManualUpdate && onManualUpdate(updated);
+
+      if (onDropTransfer) onDropTransfer(draggedClient.email);
+
+      toast.success("Cliente movido a DropManager ✔️");
+    } catch (err) {
+      toast.error("Error al procesar el elemento arrastrado 😵");
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <h3>📥 DropManager: Correos manuales</h3>
+
+      <div
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
+        style={{
+          padding: '20px',
+          border: '2px dashed #888',
+          borderRadius: '8px',
+          marginBottom: '20px',
+          backgroundColor: '#fafafa',
+          textAlign: 'center',
+          color: '#555'
+        }}
+      >
+        📤 Arrastra aquí desde ClientManager para mover correos
+      </div>
 
       <div style={{ marginBottom: 12 }}>
         <input

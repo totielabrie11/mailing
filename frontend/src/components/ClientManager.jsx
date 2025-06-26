@@ -117,6 +117,11 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
         {clients.map((client, idx) => (
           <div
             key={idx}
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData("text/plain", JSON.stringify(client));
+              e.dataTransfer.effectAllowed = "move";
+            }}
             style={{
               padding: '10px 14px',
               border: '1px solid #ccc',
@@ -126,7 +131,8 @@ const ClientManager = ({ onClientsUpdate, group, setGroup }) => {
               flexDirection: 'column',
               alignItems: 'flex-start',
               minWidth: '260px',
-              position: 'relative'
+              position: 'relative',
+              cursor: 'grab'
             }}
           >
             <div style={{ fontWeight: 500 }}>{client.email}</div>

@@ -7,15 +7,20 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const [clients, setClients] = useState([]);
-  const [dropClients, setDropClients] = useState([]);
+  const [clients, setClients] = useState([]);          // Clientes cargados desde DB
+  const [dropClients, setDropClients] = useState([]);  // Clientes manuales (drop)
   const [template, setTemplate] = useState(null);
 
   const [clientGroup, setClientGroup] = useState("nuevos");
   const [templateGroup, setTemplateGroup] = useState("nuevos");
 
-  // Combinar los destinatarios si el grupo está en "ninguno"
+  // 👇 Define la lista real de destinatarios:
   const effectiveRecipients = clientGroup === "ninguno" ? dropClients : clients;
+
+  // 👇 Se invoca cuando un email es arrastrado desde ClientManager hacia DropManager
+  const handleDropTransfer = (emailToRemove) => {
+    setClients(prev => prev.filter(c => c.email !== emailToRemove));
+  };
 
   return (
     <div style={{ padding: 20, fontFamily: 'Arial, sans-serif' }}>
@@ -30,7 +35,10 @@ const App = () => {
       </section>
 
       <section style={{ marginBottom: 30 }}>
-        <DropManager onManualUpdate={setDropClients} />
+        <DropManager
+          onManualUpdate={setDropClients}
+          onDropTransfer={handleDropTransfer}
+        />
       </section>
 
       <section style={{ marginBottom: 30 }}>
@@ -42,7 +50,11 @@ const App = () => {
       </section>
 
       <section style={{ marginBottom: 30 }}>
-        <EmailSender clients={effectiveRecipients} template={template} />
+        <EmailSender
+          clients={effectiveRecipients}
+          template={template}
+          group={clientGroup}
+        />
       </section>
 
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop />
