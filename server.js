@@ -51,17 +51,38 @@ app.post('/api/clients/:group', (req, res) => {
   }
 });
 
+// Función auxiliar para marcar inactivos
+const marcarInactivos = (clientes, dias = 30) => {
+  const ahora = Date.now();
+  const msPorDia = 1000 * 60 * 60 * 24;
+  return clientes.map(c => {
+    const ultimaFecha = new Date(c.lastSent || 0).getTime();
+    const inactivo = !c.lastSent || (ahora - ultimaFecha > dias * msPorDia);
+    return { ...c, inactivo };
+  });
+};
+
 // Obtener clientes
 app.get('/api/clients/:group', (req, res) => {
   const group = req.params.group;
   try {
-    const data = fs.existsSync(clientsFile) ? JSON.parse(fs.readFileSync(clientsFile, 'utf-8')) : {};
-    res.json(data[group] || []);
+    const data = fs.existsSync(clientsFile)
+      ? JSON.parse(fs.readFileSync(clientsFile, 'utf-8'))
+      : {};
+
+    const clientes = data[group] || [];
+    const clientesConEstado = marcarInactivos(clientes, 30); // ⚠️ 30 días de inactividad
+
+     // 👇 Acá lo imprimís completo en consola
+    console.log(`[CLIENTES - ${group}]`, clientesConEstado);
+
+    res.json(clientesConEstado);
   } catch (err) {
     console.error("Error al leer clients.json:", err);
     res.status(500).send("Error al obtener los clientes");
   }
 });
+
 
 // Eliminar cliente
 app.delete('/api/clients/:group/:email', (req, res) => {

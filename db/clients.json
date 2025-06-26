@@ -1,14 +1,9 @@
 {
   "nuevos": [
     {
-      "email": "martinezcarlosmanuel.1@gmail.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 4
-    },
-    {
       "email": "comercial1@gsarental.com.ar",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 2
+      "lastSent": "2025-04-26T18:13:31.594Z",
+      "vecesContactado": 40
     },
     {
       "email": "sincontactar@dosin.com",
@@ -27,7 +22,12 @@
     },
     {
       "email": "tititiooo@dfdfd.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
+      "lastSent": "2025-06-26T18:51:19.663Z",
+      "vecesContactado": 1
+    },
+    {
+      "email": "martinezcarlosmanuel.1@gmail.com",
+      "lastSent": "2025-06-26T18:53:05.250Z",
       "vecesContactado": 1
     }
   ],
@@ -41,17 +41,18 @@
   "compras_recientes": [
     {
       "email": "titolabrie@eso.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 2
+      "lastSent": "2025-06-26T18:44:53.925Z",
+      "vecesContactado": 36
     },
     {
       "email": "titoooooo@ahoo.com.ar",
-      "lastSent": null
+      "lastSent": "2025-06-26T18:44:53.925Z",
+      "vecesContactado": 2
     },
     {
       "email": "titonnn@sds.com.ar",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 1
+      "lastSent": "2025-06-26T18:44:53.925Z",
+      "vecesContactado": 3
     }
   ]
 }

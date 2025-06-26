@@ -5,6 +5,7 @@ import './EmailDashboard.css';
 const EmailDashboard = ({ group, setFiltro }) => {
   const [stats, setStats] = useState(null);
   const [rankingPorGrupo, setRankingPorGrupo] = useState({});
+  const [totalInactivos, setTotalInactivos] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const EmailDashboard = ({ group, setFiltro }) => {
     const fetchRankingPorGrupo = async () => {
       const grupos = ['nuevos', 'viejos', 'compras_recientes'];
       const resultado = {};
+      let contador = 0;
 
       try {
         for (const g of grupos) {
@@ -39,16 +41,21 @@ const EmailDashboard = ({ group, setFiltro }) => {
             .filter(c => typeof c !== 'string' && c.vecesContactado > 0)
             .map(c => ({
               email: c.email,
-              veces: c.vecesContactado || 0
+              veces: c.vecesContactado || 0,
+              inactivo: c.inactivo || false,
             }))
             .sort((a, b) => b.veces - a.veces);
 
           if (formateados.length > 0) {
             resultado[g] = formateados;
+            formateados.forEach(c => {
+              if (c.inactivo) contador++;
+            });
           }
         }
 
         setRankingPorGrupo(resultado);
+        setTotalInactivos(contador);
       } catch (err) {
         console.error("Error al obtener ranking por grupo:", err);
       }
@@ -112,7 +119,7 @@ const EmailDashboard = ({ group, setFiltro }) => {
         <p>No hay registros de envío recientes 📭</p>
       )}
 
-      <h4 style={{ marginTop: 20 }}>🏆 Actividad por grupo:</h4>
+      <h4>🏆 Actividad por grupo:</h4>
       <div style={{ overflowX: 'auto', paddingBottom: 8 }}>
         <div style={{ display: 'flex', gap: '16px', minWidth: '100%' }}>
           {Object.entries(rankingPorGrupo).map(([grupo, clientes]) => (
@@ -132,8 +139,32 @@ const EmailDashboard = ({ group, setFiltro }) => {
               </strong>
               <ul style={{ marginTop: 8, paddingLeft: 18 }}>
                 {clientes.map((c, idx) => (
-                  <li key={idx}>
-                    {c.email} — <strong>{c.veces}</strong> {c.veces === 1 ? 'vez' : 'veces'}
+                  <li
+                    key={idx}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      paddingRight: 4,
+                      color: c.inactivo ? '#999' : 'inherit'
+                    }}
+                  >
+                    <span>
+                      {c.email} — <strong>{c.veces}</strong> {c.veces === 1 ? 'vez' : 'veces'}
+                    </span>
+                    {c.inactivo && (
+                      <span style={{
+                        backgroundColor: '#fff3cd',
+                        border: '1px solid #ffeeba',
+                        borderRadius: 4,
+                        fontSize: '0.75rem',
+                        padding: '2px 6px',
+                        marginLeft: 8,
+                        color: '#856404'
+                      }}>
+                        Inactivo
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
