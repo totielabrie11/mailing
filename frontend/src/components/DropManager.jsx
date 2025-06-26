@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
-const DropManager = ({ onManualUpdate, onDropTransfer }) => {
+const DropManager = ({ onManualUpdate, onDropTransfer, group }) => {
   const [dropClients, setDropClients] = useState([]);
   const [email, setEmail] = useState("");
 
@@ -14,7 +15,7 @@ const DropManager = ({ onManualUpdate, onDropTransfer }) => {
     return `Hace ${days} días`;
   };
 
-  const addDropClient = () => {
+  const addDropClient = async () => {
     if (!email) return toast.error("Ingrese un correo válido ❗");
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,8 +27,22 @@ const DropManager = ({ onManualUpdate, onDropTransfer }) => {
     const updated = [...dropClients, newClient];
     setDropClients(updated);
     onManualUpdate && onManualUpdate(updated);
-    setEmail("");
     toast.success("Correo añadido ✉️");
+
+    // ✅ Confirmar persistencia
+    const confirmSave = window.confirm("¿Deseas agregar este correo también a la base de datos?");
+    if (confirmSave && group !== "ninguno") {
+      try {
+        await axios.post(`http://localhost:5000/api/clients/${group}`, { email });
+        toast.success("Guardado en la base de datos ✔️");
+      } catch (err) {
+        if (err.response?.status === 409) toast.info("Ya existe en la base de datos ⚠️");
+        else toast.error("Error al guardar en DB ❌");
+        console.error(err);
+      }
+    }
+
+    setEmail("");
   };
 
   const deleteDropClient = (emailToDelete) => {

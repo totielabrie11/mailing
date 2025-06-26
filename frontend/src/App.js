@@ -38,6 +38,7 @@ const App = () => {
         <DropManager
           onManualUpdate={setDropClients}
           onDropTransfer={handleDropTransfer}
+          group={clientGroup} // ✅ Se pasa grupo para guardar en DB si se desea
         />
       </section>
 
