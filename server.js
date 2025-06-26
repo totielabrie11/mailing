@@ -207,6 +207,32 @@ app.post('/send-email', upload.fields([
   }
 });
 
+// Estadísticas por grupo
+app.get('/api/stats/:group', (req, res) => {
+  const group = req.params.group;
+  try {
+    const data = fs.existsSync(clientsFile)
+      ? JSON.parse(fs.readFileSync(clientsFile, 'utf-8'))
+      : {};
+
+    const groupClients = data[group] || [];
+
+    const totalClientes = groupClients.length;
+    const enviados = groupClients.filter(c => c.lastSent !== null).length;
+    const sinContacto = totalClientes - enviados;
+
+    const últimosEnvios = {};
+    for (const client of groupClients) {
+      últimosEnvios[client.email] = client.lastSent || null;
+    }
+
+    res.json({ totalClientes, enviados, sinContacto, últimosEnvios });
+  } catch (err) {
+    console.error("Error generando estadísticas:", err);
+    res.status(500).send("Error al generar estadísticas");
+  }
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`🚀 Backend en marcha: http://localhost:${process.env.PORT}`);
 });

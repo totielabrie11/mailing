@@ -3,6 +3,7 @@ import ClientManager from './components/ClientManager';
 import DropManager from './components/DropManager';
 import EmailTemplateEditor from './components/EmailTemplateEditor';
 import EmailSender from './components/EmailSender';
+import EmailDashboard from './components/EmailDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,7 +15,7 @@ const App = () => {
   const [clientGroup, setClientGroup] = useState("nuevos");
   const [templateGroup, setTemplateGroup] = useState("nuevos");
 
-  // 👇 Define la lista real de destinatarios:
+  // 👇 Define la lista real de destinatarios
   const effectiveRecipients = clientGroup === "ninguno" ? dropClients : clients;
 
   // 👇 Se invoca cuando un email es arrastrado desde ClientManager hacia DropManager
@@ -35,10 +36,14 @@ const App = () => {
       </section>
 
       <section style={{ marginBottom: 30 }}>
+        <EmailDashboard group={clientGroup} />
+      </section>
+
+      <section style={{ marginBottom: 30 }}>
         <DropManager
           onManualUpdate={setDropClients}
           onDropTransfer={handleDropTransfer}
-          group={clientGroup} // ✅ Se pasa grupo para guardar en DB si se desea
+          group={clientGroup}
         />
       </section>
 
