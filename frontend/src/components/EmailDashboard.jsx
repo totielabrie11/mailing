@@ -113,24 +113,34 @@ const EmailDashboard = ({ group, setFiltro }) => {
       )}
 
       <h4 style={{ marginTop: 20 }}>🏆 Actividad por grupo:</h4>
-      {Object.keys(rankingPorGrupo).length > 0 ? (
-        Object.entries(rankingPorGrupo).map(([grupo, clientes]) => (
-          <div key={grupo} style={{ marginBottom: 16 }}>
-            <strong style={{ textTransform: 'capitalize' }}>
-              🔹 {grupo.replace(/_/g, ' ')}:
-            </strong>
-            <ul style={{ marginTop: 6 }}>
-              {clientes.map((c, idx) => (
-                <li key={idx}>
-                  {c.email} — <strong>{c.veces}</strong> {c.veces === 1 ? 'vez' : 'veces'}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      ) : (
-        <p>No hay actividad registrada aún 🕵️</p>
-      )}
+      <div style={{ overflowX: 'auto', paddingBottom: 8 }}>
+        <div style={{ display: 'flex', gap: '16px', minWidth: '100%' }}>
+          {Object.entries(rankingPorGrupo).map(([grupo, clientes]) => (
+            <div
+              key={grupo}
+              style={{
+                minWidth: 250,
+                flex: '0 0 30%',
+                backgroundColor: '#f3f3f3',
+                borderRadius: 8,
+                padding: '12px 16px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+              }}
+            >
+              <strong style={{ textTransform: 'capitalize' }}>
+                🔹 {grupo.replace(/_/g, ' ')}
+              </strong>
+              <ul style={{ marginTop: 8, paddingLeft: 18 }}>
+                {clientes.map((c, idx) => (
+                  <li key={idx}>
+                    {c.email} — <strong>{c.veces}</strong> {c.veces === 1 ? 'vez' : 'veces'}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
