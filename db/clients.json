@@ -2,24 +2,32 @@
   "nuevos": [
     {
       "email": "martinezcarlosmanuel.1@gmail.com",
-      "lastSent": "2025-06-26T15:04:37.929Z"
+      "lastSent": "2025-06-26T17:23:46.650Z",
+      "vecesContactado": 3
     },
     {
       "email": "comercial1@gsarental.com.ar",
-      "lastSent": "2025-06-26T15:04:37.929Z"
+      "lastSent": "2025-06-26T17:22:15.000Z",
+      "vecesContactado": 1
     },
     {
       "email": "sincontactar@dosin.com",
-      "lastSent": null
+      "lastSent": "2025-06-26T17:28:20.176Z",
+      "vecesContactado": 2
     }
   ],
   "viejos": [
     {
       "email": "primercliente@dosiman.com",
-      "lastSent": "2025-06-26T16:54:21.853Z"
+      "lastSent": "2025-06-26T16:54:21.853Z",
+      "vecesContactado": 2
     }
   ],
   "compras_recientes": [
-    "cdmartinez@telecentro.com.ar"
+    {
+      "email": "titolabrie@eso.com",
+      "lastSent": "2025-06-26T17:35:11.737Z",
+      "vecesContactado": 1
+    }
   ]
 }

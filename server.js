@@ -185,15 +185,21 @@ app.post('/send-email', upload.fields([
       console.log(`📨 Enviado a: ${email}`);
     }
 
-    // ✅ Actualizar lastSent
-    const clientsData = JSON.parse(fs.readFileSync(clientsFile, 'utf-8'));
-    const now = new Date().toISOString();
-    for (const group in clientsData) {
-      clientsData[group] = clientsData[group].map(c =>
-        parsedEmails.includes(c.email)
-          ? { ...c, lastSent: now }
-          : c
-      );
+    
+// ✅ Actualizar lastSent y vecesContactado
+const clientsData = JSON.parse(fs.readFileSync(clientsFile, 'utf-8'));
+const now = new Date().toISOString();
+for (const group in clientsData) {
+  clientsData[group] = clientsData[group].map(c => {
+    if (parsedEmails.includes(c.email)) {
+      return {
+        ...c,
+        lastSent: now,
+        vecesContactado: (c.vecesContactado || 0) + 1
+      };
+    }
+        return c;
+      });
     }
     fs.writeFileSync(clientsFile, JSON.stringify(clientsData, null, 2));
 
@@ -230,6 +236,35 @@ app.get('/api/stats/:group', (req, res) => {
   } catch (err) {
     console.error("Error generando estadísticas:", err);
     res.status(500).send("Error al generar estadísticas");
+  }
+});
+
+app.get('/api/envios/ranking', (req, res) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(clientsFile, 'utf-8'));
+    const contador = {};
+
+    for (const grupo in data) {
+      const clientes = data[grupo];
+
+      for (const cliente of clientes) {
+        const email = typeof cliente === 'string' ? cliente : cliente.email;
+        const lastSent = typeof cliente === 'string' ? null : cliente.lastSent;
+
+        if (lastSent) {
+          contador[email] = (contador[email] || 0) + 1;
+        }
+      }
+    }
+
+    const ranking = Object.entries(contador)
+      .map(([email, cantidad]) => ({ email, cantidad }))
+      .sort((a, b) => b.cantidad - a.cantidad);
+
+    res.json(ranking);
+  } catch (err) {
+    console.error("Error al generar ranking:", err);
+    res.status(500).send("Error al generar ranking");
   }
 });
 
