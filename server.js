@@ -8,6 +8,12 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
+
+const cors = require('cors');
+app.use(cors({
+  origin: process.env.FRONTEND_URL
+}));
+
 app.use(express.json());
 
 const documentPath = path.join(__dirname, 'document');
