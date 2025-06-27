@@ -7,9 +7,10 @@ require('dotenv').config();
 
 const app = express();
 
-const cors = require('cors');
 app.use(cors({
-  origin: 'https://mailing-front-eight.vercel.app'
+  origin: 'https://mailing-front-eight.vercel.app',
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());
