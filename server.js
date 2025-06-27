@@ -9,7 +9,7 @@ const app = express();
 
 const cors = require('cors');
 app.use(cors({
-  origin: process.env.FRONTEND_URL
+  origin: 'https://mailing-front-eight.vercel.app'
 }));
 
 app.use(express.json());
