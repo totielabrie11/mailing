@@ -1,34 +1,43 @@
 {
   "nuevos": [
     {
-      "email": "comercial1@gsarental.com.ar",
-      "lastSent": "2025-04-26T18:13:31.594Z",
-      "vecesContactado": 40
-    },
-    {
       "email": "sincontactar@dosin.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 3
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 4
     },
     {
       "email": "adfdf@dswwd.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 1
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 2
     },
     {
       "email": "torri@dos.com",
-      "lastSent": "2025-06-26T18:13:31.594Z",
-      "vecesContactado": 1
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 2
     },
     {
       "email": "tititiooo@dfdfd.com",
-      "lastSent": "2025-06-26T18:51:19.663Z",
-      "vecesContactado": 1
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 2
     },
     {
       "email": "martinezcarlosmanuel.1@gmail.com",
-      "lastSent": "2025-06-26T18:53:05.250Z",
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 2
+    },
+    {
+      "email": "nuncacompre@tito.com",
+      "lastSent": "2025-06-27T11:06:24.555Z",
       "vecesContactado": 1
+    },
+    {
+      "email": "alquileres@gsarental.com.ar",
+      "lastSent": "2025-06-27T11:06:24.555Z",
+      "vecesContactado": 1
+    },
+    {
+      "email": "primeravisita@tito.com",
+      "lastSent": null
     }
   ],
   "viejos": [
@@ -53,6 +62,11 @@
       "email": "titonnn@sds.com.ar",
       "lastSent": "2025-06-26T18:44:53.925Z",
       "vecesContactado": 3
+    },
+    {
+      "email": "cintianatali.m1@gmail.com",
+      "lastSent": "2025-06-26T21:26:20.316Z",
+      "vecesContactado": 1
     }
   ]
 }
