@@ -1,51 +1,102 @@
 [
   {
-    "id": "dccb1fe5-b0b9-478d-9f11-cff36d97611e",
-    "title": "📊 Seguimiento grupo viejo",
+    "id": "f46b5740-2375-4c78-b9a8-e8c23a74f2b2",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-23T03:00:00.000Z",
+    "end": "2025-07-23T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
+  },
+  {
+    "id": "a976bb9d-1549-4cc8-a65c-89a5ad13616c",
+    "title": "📤 Envío a compras_recientes",
+    "start": "2025-07-08T03:00:00.000Z",
+    "end": "2025-07-08T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "compras_recientes",
+    "plantilla": "default",
+    "pendiente": true
+  },
+  {
+    "id": "f6cdad1b-3feb-4fe6-b775-bf7afdcae686",
+    "title": "📤 Envío a nuevos",
     "start": "2025-07-16T03:00:00.000Z",
     "end": "2025-07-16T04:00:00.000Z",
-    "allDay": false
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "10a75e0d-09e2-4505-aa55-706e18b9d5e0",
-    "title": "📤 Envío programado: nuevos clientes",
-    "start": "2025-07-17T20:00:00.000Z",
-    "end": "2025-07-17T21:00:00.000Z",
-    "allDay": false
+    "id": "93fcc520-b5fc-4548-84ef-8559fa8019fd",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-18T03:00:00.000Z",
+    "end": "2025-07-18T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "d01512cd-d41a-4666-ad06-946272282230",
-    "title": "📊 Seguimiento grupo viejo",
-    "start": "2025-07-09T03:30:00.000Z",
-    "end": "2025-07-09T04:30:00.000Z",
-    "allDay": false
+    "id": "e738f966-73e2-46a3-9a2c-fcc49dda04a2",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-19T03:00:00.000Z",
+    "end": "2025-07-19T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "136c189d-f788-4654-a25b-fe685ffb6118",
-    "title": "📊 Seguimiento grupo viejo",
-    "start": "2025-07-09T08:00:00.000Z",
-    "end": "2025-07-09T09:00:00.000Z",
-    "allDay": false
+    "id": "894a85f9-fbb6-4503-9624-81d52e752564",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-25T03:00:00.000Z",
+    "end": "2025-07-25T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "0697781b-d428-42f0-8a45-e42b02937c0b",
-    "title": "📤 Envío programado: nuevos clientes",
-    "start": "2025-07-10T03:00:00.000Z",
-    "end": "2025-07-10T04:00:00.000Z",
-    "allDay": false
+    "id": "96ee62f9-4c3c-489f-ad3a-06bc0d544115",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-21T03:00:00.000Z",
+    "end": "2025-07-21T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "2ccf2f73-cbe7-4c09-8bea-ea7a236a89a0",
-    "title": "📤 Envío programado: nuevos clientes",
-    "start": "2025-07-11T18:00:00.000Z",
-    "end": "2025-07-11T19:00:00.000Z",
-    "allDay": false
+    "id": "23045030-c5ce-4ae1-8d95-3225b98ff370",
+    "title": "📤 Envío a nuevos",
+    "start": "2025-07-13T03:00:00.000Z",
+    "end": "2025-07-13T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "nuevos",
+    "plantilla": "default",
+    "pendiente": true
   },
   {
-    "id": "1e80dd44-8c70-4e04-8d6a-4541f8979e42",
-    "title": "📊 Seguimiento grupo viejo",
-    "start": "2025-07-19T16:00:00.000Z",
-    "end": "2025-07-19T17:00:00.000Z",
-    "allDay": false
+    "id": "14ce6ff9-6dc1-42b7-b853-ecec3216a82b",
+    "title": "📤 Envío a viejos",
+    "start": "2025-07-14T03:00:00.000Z",
+    "end": "2025-07-14T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "viejos",
+    "plantilla": "default",
+    "pendiente": true
+  },
+  {
+    "id": "87e92671-938a-4018-8a00-621e74aebd02",
+    "title": "📤 Envío a viejos",
+    "start": "2025-07-29T03:00:00.000Z",
+    "end": "2025-07-29T04:00:00.000Z",
+    "allDay": false,
+    "grupoObjetivo": "viejos",
+    "plantilla": "default",
+    "pendiente": true
   }
 ]

@@ -296,17 +296,51 @@ app.get('/api/envios/ranking', (req, res) => {
 
 app.get('/api/events', (req, res) => {
   try {
-    const data = JSON.parse(fs.readFileSync(eventsFile, 'utf-8'));
-    res.json(data); // ← Cada evento ya incluye su id
+    const data = fs.existsSync(eventsFile)
+      ? JSON.parse(fs.readFileSync(eventsFile, 'utf-8'))
+      : [];
+
+    res.json(data);
   } catch (err) {
-    console.error("Error al obtener eventos:", err);
-    res.status(500).send("Error al leer eventos");
+    console.error("Error al leer events.json:", err);
+    res.status(500).send("Error al obtener los eventos");
+  }
+});
+
+
+app.post('/api/events', (req, res) => {
+  const { title, start, end, allDay, grupoObjetivo, plantilla, pendiente } = req.body;
+  if (!title || !start || !end) {
+    return res.status(400).send("Datos incompletos");
+  }
+  try {
+    const data = fs.existsSync(eventsFile)
+      ? JSON.parse(fs.readFileSync(eventsFile, 'utf-8'))
+      : [];
+
+    const nuevoEvento = {
+      id: uuidv4(),
+      title,
+      start,
+      end,
+      allDay: !!allDay,
+      grupoObjetivo: grupoObjetivo || null,
+      plantilla: plantilla   || null,
+      pendiente: pendiente   || false
+    };
+
+    data.push(nuevoEvento);
+    fs.writeFileSync(eventsFile, JSON.stringify(data, null, 2));
+    res.status(201).json(nuevoEvento);
+  } catch (err) {
+    console.error("Error al guardar evento:", err);
+    res.status(500).send("Error al guardar evento");
   }
 });
 
 app.put('/api/events/:id', (req, res) => {
   const { id } = req.params;
-  const { title, start, end, allDay } = req.body;
+  const { title, start, end, allDay, grupoObjetivo, plantilla, pendiente } = req.body;
 
   if (!id || !title || !start || !end) {
     return res.status(400).send("Datos incompletos");
@@ -322,54 +356,23 @@ app.put('/api/events/:id', (req, res) => {
       return res.status(404).send("Evento no encontrado");
     }
 
-    data[index] = { id, title, start, end, allDay };
-    fs.writeFileSync(eventsFile, JSON.stringify(data, null, 2));
-
-    res.status(200).json({ message: "Evento actualizado", evento: data[index] });
-  } catch (err) {
-    console.error("Error al actualizar evento:", err);
-    res.status(500).send("Fallo en la actualización");
-  }
-});
-
-app.post('/api/events', (req, res) => {
-  const { title, start, end, allDay } = req.body;
-
-  if (
-    !title ||
-    !start ||
-    !end ||
-    typeof title !== 'string' ||
-    typeof start !== 'string' ||
-    typeof end !== 'string' ||
-    isNaN(Date.parse(start)) ||
-    isNaN(Date.parse(end))
-  ) {
-    return res.status(400).send("Datos inválidos para guardar evento");
-  }
-
-  try {
-    if (!fs.existsSync(eventsFile)) {
-      fs.writeFileSync(eventsFile, JSON.stringify([], null, 2));
-    }
-
-    const data = JSON.parse(fs.readFileSync(eventsFile, 'utf-8'));
-
-    const nuevoEvento = {
-      id: uuidv4(),
+    // Actualiza solo los campos editables
+    data[index] = {
+      ...data[index],
       title,
       start,
       end,
-      allDay: !!allDay
+      allDay: !!allDay,
+      grupoObjetivo,
+      plantilla,
+      pendiente
     };
 
-    data.push(nuevoEvento);
     fs.writeFileSync(eventsFile, JSON.stringify(data, null, 2));
-
-    res.status(201).json(nuevoEvento);
+    res.json(data[index]);
   } catch (err) {
-    console.error("Error al guardar evento:", err);
-    res.status(500).send("Error al guardar evento");
+    console.error("Error al actualizar evento:", err);
+    res.status(500).send("Fallo en la actualización");
   }
 });
 
