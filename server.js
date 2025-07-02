@@ -5,14 +5,11 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 const cors = require('cors')
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
-app.use(cors({
-  origin: 'https://mailing-front-eight.vercel.app',
-  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
 
 app.use(express.json());
 
@@ -25,10 +22,12 @@ if (!fs.existsSync(documentPath)) {
 const dbPath = path.join(__dirname, 'db');
 const clientsFile = path.join(dbPath, 'clients.json');
 const plantillaFile = path.join(dbPath, 'plantilla.json');
+const eventsFile = path.join(dbPath, 'events.json');
 
 if (!fs.existsSync(dbPath)) fs.mkdirSync(dbPath);
 if (!fs.existsSync(clientsFile)) fs.writeFileSync(clientsFile, JSON.stringify({}, null, 2));
 if (!fs.existsSync(plantillaFile)) fs.writeFileSync(plantillaFile, JSON.stringify({}, null, 2));
+if (!fs.existsSync(eventsFile)) fs.writeFileSync(eventsFile, JSON.stringify([], null, 2));
 
 // Agregar cliente
 app.post('/api/clients/:group', (req, res) => {
@@ -292,6 +291,85 @@ app.get('/api/envios/ranking', (req, res) => {
   } catch (err) {
     console.error("Error al generar ranking:", err);
     res.status(500).send("Error al generar ranking");
+  }
+});
+
+app.get('/api/events', (req, res) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(eventsFile, 'utf-8'));
+    res.json(data); // ← Cada evento ya incluye su id
+  } catch (err) {
+    console.error("Error al obtener eventos:", err);
+    res.status(500).send("Error al leer eventos");
+  }
+});
+
+app.put('/api/events/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, start, end, allDay } = req.body;
+
+  if (!id || !title || !start || !end) {
+    return res.status(400).send("Datos incompletos");
+  }
+
+  try {
+    const data = fs.existsSync(eventsFile)
+      ? JSON.parse(fs.readFileSync(eventsFile, 'utf-8'))
+      : [];
+
+    const index = data.findIndex(e => e.id === id);
+    if (index === -1) {
+      return res.status(404).send("Evento no encontrado");
+    }
+
+    data[index] = { id, title, start, end, allDay };
+    fs.writeFileSync(eventsFile, JSON.stringify(data, null, 2));
+
+    res.status(200).json({ message: "Evento actualizado", evento: data[index] });
+  } catch (err) {
+    console.error("Error al actualizar evento:", err);
+    res.status(500).send("Fallo en la actualización");
+  }
+});
+
+app.post('/api/events', (req, res) => {
+  const { title, start, end, allDay } = req.body;
+
+  if (
+    !title ||
+    !start ||
+    !end ||
+    typeof title !== 'string' ||
+    typeof start !== 'string' ||
+    typeof end !== 'string' ||
+    isNaN(Date.parse(start)) ||
+    isNaN(Date.parse(end))
+  ) {
+    return res.status(400).send("Datos inválidos para guardar evento");
+  }
+
+  try {
+    if (!fs.existsSync(eventsFile)) {
+      fs.writeFileSync(eventsFile, JSON.stringify([], null, 2));
+    }
+
+    const data = JSON.parse(fs.readFileSync(eventsFile, 'utf-8'));
+
+    const nuevoEvento = {
+      id: uuidv4(),
+      title,
+      start,
+      end,
+      allDay: !!allDay
+    };
+
+    data.push(nuevoEvento);
+    fs.writeFileSync(eventsFile, JSON.stringify(data, null, 2));
+
+    res.status(201).json(nuevoEvento);
+  } catch (err) {
+    console.error("Error al guardar evento:", err);
+    res.status(500).send("Error al guardar evento");
   }
 });
 

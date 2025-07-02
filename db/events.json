@@ -1,0 +1,51 @@
+[
+  {
+    "id": "dccb1fe5-b0b9-478d-9f11-cff36d97611e",
+    "title": "📊 Seguimiento grupo viejo",
+    "start": "2025-07-16T03:00:00.000Z",
+    "end": "2025-07-16T04:00:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "10a75e0d-09e2-4505-aa55-706e18b9d5e0",
+    "title": "📤 Envío programado: nuevos clientes",
+    "start": "2025-07-17T20:00:00.000Z",
+    "end": "2025-07-17T21:00:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "d01512cd-d41a-4666-ad06-946272282230",
+    "title": "📊 Seguimiento grupo viejo",
+    "start": "2025-07-09T03:30:00.000Z",
+    "end": "2025-07-09T04:30:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "136c189d-f788-4654-a25b-fe685ffb6118",
+    "title": "📊 Seguimiento grupo viejo",
+    "start": "2025-07-09T08:00:00.000Z",
+    "end": "2025-07-09T09:00:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "0697781b-d428-42f0-8a45-e42b02937c0b",
+    "title": "📤 Envío programado: nuevos clientes",
+    "start": "2025-07-10T03:00:00.000Z",
+    "end": "2025-07-10T04:00:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "2ccf2f73-cbe7-4c09-8bea-ea7a236a89a0",
+    "title": "📤 Envío programado: nuevos clientes",
+    "start": "2025-07-11T18:00:00.000Z",
+    "end": "2025-07-11T19:00:00.000Z",
+    "allDay": false
+  },
+  {
+    "id": "1e80dd44-8c70-4e04-8d6a-4541f8979e42",
+    "title": "📊 Seguimiento grupo viejo",
+    "start": "2025-07-19T16:00:00.000Z",
+    "end": "2025-07-19T17:00:00.000Z",
+    "allDay": false
+  }
+]
